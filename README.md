@@ -23,7 +23,7 @@ redirect_to request_data[:permissions_url]
 
 ~~~~~ ruby
 paypal = Paypal::Permissions::Paypal.new( userid, password, signature, application_id, :production )
-token_data = paypal.get_access_token( params['token'], params['verifier'] )
+token_data = paypal.get_access_token( params[:request_token], params[:verification_code] )
 
 # Save token_data[:token] and token_data[:token_secret]
 ~~~~~
