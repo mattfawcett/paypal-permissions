@@ -16,6 +16,15 @@ module Paypal
 
       SANDBOX_GRANT_PERMISSION_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_grant-permission&request_token='
       PRODUCTION_GRANT_PERMISSION_URL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_grant-permission&request_token='
+      BASIC_PERSONAL_DATA_ATTRIBUTES = {
+        :first_name   => 'http://axschema.org/namePerson/first',
+        :last_name    => 'http://axschema.org/namePerson/last',
+        :email        => 'http://axschema.org/contact/email',
+        :full_name    => 'http://schema.openid.net/contact/fullname',
+        :company_name => 'http://openid.net/schema/company/name',
+        :country      => 'http://axschema.org/contact/country/home',
+        :payer_id     => 'https://www.paypal.com/webapps/auth/schema/payerID'
+      }
 
 
       # From https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_PermissionsAbout
@@ -110,6 +119,18 @@ module Paypal
         true
       end
 
+      # Lookup the basic personal data
+      def basic_personal_data(token)
+        url = create_url('GetBasicPersonalData')
+        attributes = { 'token' => token }
+        BASIC_PERSONAL_DATA_ATTRIBUTES.each_with_index do |(field, uri), index|
+          attributes["attributeList.attribute(#{index})"] = uri
+        end
+        data = call(url, attributes)
+
+        parse_personal_data(data)
+      end
+
       protected
 
       def create_url(endpoint)
@@ -175,6 +196,16 @@ module Paypal
 
         # Convert to symbols
         scopes.collect { |paypal_scope| PERMISSIONS.select { |k,val| val == paypal_scope }.keys.first }
+      end
+
+      def parse_personal_data(data)
+        {}.tap do |personal_data|
+          BASIC_PERSONAL_DATA_ATTRIBUTES.length.times do |index|
+            field_name = BASIC_PERSONAL_DATA_ATTRIBUTES.key(data["response.personalData(#{index}).personalDataKey"])
+            value = data["response.personalData(#{index}).personalDataValue"]
+            personal_data[field_name] = value
+          end
+        end
       end
     end
   end
