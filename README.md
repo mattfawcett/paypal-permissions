@@ -49,6 +49,12 @@ scopes = paypal.lookup_permissions paypal_token
 paypal.cancel_permissions paypal_token
 ~~~~~
 
+### Lookup the users personal data
+
+~~~~~ ruby
+paypal.basic_personal_data
+~~~~~
+
 ## Available Permissions
 
     :express_checkout
