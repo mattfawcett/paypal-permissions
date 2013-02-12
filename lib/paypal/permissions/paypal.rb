@@ -120,13 +120,14 @@ module Paypal
       end
 
       # Lookup the basic personal data
-      def basic_personal_data(token)
+      def basic_personal_data(token, token_secret)
         url = create_url('GetBasicPersonalData')
-        attributes = { 'token' => token }
+        attributes = {}
         BASIC_PERSONAL_DATA_ATTRIBUTES.each_with_index do |(field, uri), index|
           attributes["attributeList.attribute(#{index})"] = uri
         end
-        data = call(url, attributes)
+        signature = generate_signature(token, token_secret, 'POST', 'https://svcs.sandbox.paypal.com/Permissions/GetBasicPersonalData')
+        data = call(url, attributes, 'X-PAYPAL-AUTHORIZATION' => signature)
 
         parse_personal_data(data)
       end
@@ -137,8 +138,9 @@ module Paypal
         (mode == :production ? PRODUCTION_SERVER : SANDBOX_SERVER) + endpoint
       end
 
-      def call(url, params={})
-        headers = {
+      def call(url, params={}, headers={})
+        headers.merge!(
+        {
           'X-PAYPAL-SECURITY-USERID' => @userid,
           'X-PAYPAL-SECURITY-PASSWORD' => @password,
           'X-PAYPAL-SECURITY-SIGNATURE' => @signature,
@@ -146,7 +148,7 @@ module Paypal
           'X-PAYPAL-RESPONSE-DATA-FORMAT'=> 'NV',
           'X-PAYPAL-APPLICATION-ID' => @application_id,
           'Content-Type' => 'application/x-www-form-urlencoded',
-        }
+        })
         params['requestEnvelope.errorLanguage'] = 'en_US'
         data = params.map{ |k,v| "#{CGI.escape(k)}=#{CGI.escape(v)}" }.join('&')
         data = URI.encode_www_form(params)

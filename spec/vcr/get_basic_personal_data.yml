@@ -3,12 +3,14 @@
   request: !ruby/struct:VCR::Request
     method: :post
     uri: https://svcs.sandbox.paypal.com:443/Permissions/GetBasicPersonalData
-    body: token=fLCY--52gZNRFL05xkH29I53WaEIL8Npg2bk10FY1I.lXhGp6Me5ZA&attributeList.attribute%280%29=http%3A%2F%2Faxschema.org%2FnamePerson%2Ffirst&attributeList.attribute%281%29=http%3A%2F%2Faxschema.org%2FnamePerson%2Flast&attributeList.attribute%282%29=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&attributeList.attribute%283%29=http%3A%2F%2Fschema.openid.net%2Fcontact%2Ffullname&attributeList.attribute%284%29=http%3A%2F%2Fopenid.net%2Fschema%2Fcompany%2Fname&attributeList.attribute%285%29=http%3A%2F%2Faxschema.org%2Fcontact%2Fcountry%2Fhome&attributeList.attribute%286%29=https%3A%2F%2Fwww.paypal.com%2Fwebapps%2Fauth%2Fschema%2FpayerID&requestEnvelope.errorLanguage=en_US
+    body: attributeList.attribute%280%29=http%3A%2F%2Faxschema.org%2FnamePerson%2Ffirst&attributeList.attribute%281%29=http%3A%2F%2Faxschema.org%2FnamePerson%2Flast&attributeList.attribute%282%29=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&attributeList.attribute%283%29=http%3A%2F%2Fschema.openid.net%2Fcontact%2Ffullname&attributeList.attribute%284%29=http%3A%2F%2Fopenid.net%2Fschema%2Fcompany%2Fname&attributeList.attribute%285%29=http%3A%2F%2Faxschema.org%2Fcontact%2Fcountry%2Fhome&attributeList.attribute%286%29=https%3A%2F%2Fwww.paypal.com%2Fwebapps%2Fauth%2Fschema%2FpayerID&requestEnvelope.errorLanguage=en_US
     headers:
+      x-paypal-authorization:
+      - timestamp=1360668541,token=fLCY--52gZNRFL05xkH29I53WaEIL8Npg2bk10FY1I.lXhGp6Me5ZA,signature=oSQD4cbL93/oI6RzvB6uOlf7N3Q=
       x-paypal-security-userid:
-      - mail@example.com
+      - subs_1301086593_biz_api1.viddler.com
       x-paypal-security-password:
-      - '1301086599'
+      - '123456'
       x-paypal-security-signature:
       - AFcWxV21C7fd0v3bYYYRCpSSRl31A7tDAD-tI2s8CfqMs-7llSiGBrcw
       x-paypal-request-data-format:
@@ -25,7 +27,7 @@
       message: OK
     headers:
       date:
-      - Fri, 08 Feb 2013 11:17:00 GMT
+      - Tue, 12 Feb 2013 11:29:03 GMT
       server:
       - Apache-Coyote/1.1
       x-paypal-message-protocol:
@@ -33,7 +35,7 @@
       x-paypal-response-data-format:
       - NV
       x-ebay-soa-request-id:
-      - 13cb985c-e990-a486-d653-abc3fffffc18!Permissions!10.72.109.101![]
+      - 13cce2a4-72c0-a486-d653-abc3fffff7e5!Permissions!10.72.109.101![]
       x-paypal-operation-name:
       - GetBasicPersonalData
       x-paypal-service-name:
@@ -43,11 +45,11 @@
       content-type:
       - text/plain;charset=UTF-8
       set-cookie:
-      - Apache=10.72.109.11.1360322219351830; path=/; expires=Sun, 01-Feb-43 11:16:59
+      - Apache=10.72.109.11.1360668542496662; path=/; expires=Thu, 05-Feb-43 11:29:02
         GMT
       vary:
       - Accept-Encoding
       transfer-encoding:
       - chunked
-    body: responseEnvelope.timestamp=2013-02-08T03%3A17%3A00.389-08%3A00&responseEnvelope.ack=Success&responseEnvelope.correlationId=9f330da45cd7e&responseEnvelope.build=2210301&response.personalData(0).personalDataKey=http%3A%2F%2Faxschema.org%2Fcontact%2Fcountry%2Fhome&response.personalData(0).personalDataValue=US&response.personalData(1).personalDataKey=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&response.personalData(1).personalDataValue=mail%40example.com&response.personalData(2).personalDataKey=http%3A%2F%2Faxschema.org%2FnamePerson%2Ffirst&response.personalData(2).personalDataValue=Matt&response.personalData(3).personalDataKey=http%3A%2F%2Faxschema.org%2FnamePerson%2Flast&response.personalData(3).personalDataValue=Fawcett&response.personalData(4).personalDataKey=http%3A%2F%2Fschema.openid.net%2Fcontact%2Ffullname&response.personalData(4).personalDataValue=Matt+Fawcett&response.personalData(5).personalDataKey=https%3A%2F%2Fwww.paypal.com%2Fwebapps%2Fauth%2Fschema%2FpayerID&response.personalData(5).personalDataValue=TEST6781234
+    body: responseEnvelope.timestamp=2013-02-12T03%3A29%3A03.796-08%3A00&responseEnvelope.ack=Success&responseEnvelope.correlationId=a307e80fa4f36&responseEnvelope.build=2210301&response.personalData(0).personalDataKey=http%3A%2F%2Faxschema.org%2Fcontact%2Fcountry%2Fhome&response.personalData(0).personalDataValue=US&response.personalData(1).personalDataKey=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&response.personalData(1).personalDataValue=tesbus_1360313429_biz%40viddler.com&response.personalData(2).personalDataKey=http%3A%2F%2Faxschema.org%2FnamePerson%2Ffirst&response.personalData(2).personalDataValue=Matt&response.personalData(3).personalDataKey=http%3A%2F%2Faxschema.org%2FnamePerson%2Flast&response.personalData(3).personalDataValue=Fawcett&response.personalData(4).personalDataKey=http%3A%2F%2Fschema.openid.net%2Fcontact%2Ffullname&response.personalData(4).personalDataValue=Matt+Fawcett&response.personalData(5).personalDataKey=https%3A%2F%2Fwww.paypal.com%2Fwebapps%2Fauth%2Fschema%2FpayerID&response.personalData(5).personalDataValue=4L5QRRHLERPCU
     http_version: '1.1'

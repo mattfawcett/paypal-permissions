@@ -62,13 +62,13 @@ module Paypal::Permissions
     describe "#basic_personal_data" do
       it "should return a hash of basic personal data" do
         VCR.use_cassette("get_basic_personal_data") do
-          details = @paypal.basic_personal_data('M-RTGNyaZP5OMNIUxkH29I53eFvQhTJk3UfByH4pWfjSQHlj5csUVA')
+          details = @paypal.basic_personal_data('fLCY--52gZNRFL05xkH29I53WaEIL8Npg2bk10FY1I.lXhGp6Me5ZA', 'lfEP48wOcZsi-0LM8H6F-QTHgZI')
           details[:country].should    == 'US'
-          details[:email].should      == 'mail@example.com'
+          details[:email].should      == 'tesbus_1360313429_biz@viddler.com'
           details[:first_name].should == 'Matt'
           details[:last_name].should  == 'Fawcett'
           details[:full_name].should  == 'Matt+Fawcett'
-          details[:payer_id].should   == 'TEST6781234'
+          details[:payer_id].should   == '4L5QRRHLERPCU'
         end
       end
     end
