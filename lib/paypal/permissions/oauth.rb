@@ -5,11 +5,6 @@ require 'uri'
 module Paypal
   module Permissions
     module Oauth
-
-      # Note: OAuth does not encode '.', but PayPal does.
-      OAUTH_RESERVED_CHARACTERS = /[^a-zA-Z0-9\_]/
-      OAUTH_SIGNATURE_METHOD    = 'HMAC-SHA1'
-
       # Create the X-PP-AUTHORIZATION header
       def generate_signature(token, token_secret, http_method, endpoint)
         raise "Invalid HTTP Method. Valid values: GET, POST, DELETE, UPDATE." unless ['GET','POST','DELETE','UPDATE'].include? http_method
