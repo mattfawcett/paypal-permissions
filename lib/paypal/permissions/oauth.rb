@@ -15,29 +15,41 @@ module Paypal
         raise "Invalid HTTP Method. Valid values: GET, POST, DELETE, UPDATE." unless ['GET','POST','DELETE','UPDATE'].include? http_method
 
         timestamp = Time.now.to_i.to_s
-        signature_key = "#{@password}&#{oauth_escape(token_secret)}"
 
-        oauth_params = {
-          'oauth_consumer_key'      => @userid,
-          'oauth_signature_method'  => OAUTH_SIGNATURE_METHOD,
-          'oauth_timestamp'         => timestamp,
-          'oauth_token'             => token,
-          'oauth_version'           => '1.0',
-        }
+        query_params = {}
+        key = [
+          paypal_encode(@password),
+          paypal_encode(token_secret),
+        ].join("&")
 
-        input_string = "#{http_method}&#{oauth_escape(endpoint)}&"
-        input_string += oauth_params.map{ |k,v| "#{k}=#{v}" }.join('&')
+        params = query_params.dup.merge({
+          "oauth_consumer_key" => @userid,
+          "oauth_version" => "1.0",
+          "oauth_signature_method" => "HMAC-SHA1",
+          "oauth_token" => token,
+          "oauth_timestamp" => timestamp,
+        })
+        sorted_query_string = params.collect do |key, value|
+          "#{key}=#{value}"
+        end.sort.join('&')
 
-        # HMAC SHA1
-        digest_key = ::Digest::SHA1.digest(signature_key)
-        sha1_hash  = ::OpenSSL::Digest::Digest.new('sha1')
-        signature  = ::OpenSSL::HMAC.hexdigest(sha1_hash, digest_key, input_string)
+        base = [
+          "POST",
+          paypal_encode(endpoint),
+          paypal_encode(sorted_query_string)
+        ].join("&")
+        base = base.gsub /%([0-9A-F])([0-9A-F])/ do
+          "%#{$1.downcase}#{$2.downcase}"  # hack to match PayPal Java SDK bit for bit
+        end
 
+        digest = OpenSSL::HMAC.digest('sha1', key, base)
+        signature = Base64.encode64(digest).chomp
         "timestamp=#{timestamp},token=#{token},signature=#{signature}"
       end
 
-      def oauth_escape(value)
-        URI::escape(value.to_s, OAUTH_RESERVED_CHARACTERS)
+      def paypal_encode(str)
+        s = str.dup
+        CGI.escape(s).gsub('.', '%2e').gsub('-', '%2d')
       end
     end
   end
