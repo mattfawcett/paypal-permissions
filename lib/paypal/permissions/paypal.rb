@@ -126,7 +126,8 @@ module Paypal
         BASIC_PERSONAL_DATA_ATTRIBUTES.each_with_index do |(field, uri), index|
           attributes["attributeList.attribute(#{index})"] = uri
         end
-        signature = generate_signature(token, token_secret, 'POST', 'https://svcs.sandbox.paypal.com/Permissions/GetBasicPersonalData')
+        url = create_url('GetBasicPersonalData')
+        signature = generate_signature(token, token_secret, 'POST', url)
         data = call(url, attributes, 'X-PAYPAL-AUTHORIZATION' => signature)
 
         parse_personal_data(data)
